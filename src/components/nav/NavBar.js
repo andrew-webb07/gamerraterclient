@@ -8,6 +8,9 @@ export const NavBar = (props) => {
             <li className="navbar__item">
             <Link className="navbar__link" to="/">Gamer Rater</Link>
             </li>
+            <li className="navbar__item">
+            <Link className="navbar__link" to="/games">Games</Link>
+            </li>
             {
                 (localStorage.getItem("gr_token") !== null) ?
                     <li className="navbar__item">
