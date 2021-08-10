@@ -4,7 +4,7 @@ import "./Game.css"
 import { useParams, useHistory } from "react-router-dom"
 
 export const GameDetails = () => {
-    const { games, getGame, getGames } = useContext(GameContext)
+    const { getGame, getGames, getReviews, reviews } = useContext(GameContext)
     const [ game, setGame ] = useState({})
 
     const { gameId } = useParams();
@@ -13,6 +13,7 @@ export const GameDetails = () => {
 
     useEffect(() => {
         getGames()
+        getReviews()
     }, [])
 
     useEffect(() => {
@@ -22,6 +23,8 @@ export const GameDetails = () => {
             })
         }
     }, [gameId])
+    
+    const filteredReviews = reviews.filter(review => review.game.id === game.id)
 
     return (
     <section className="game">
@@ -31,6 +34,17 @@ export const GameDetails = () => {
         <div>Number of Players: {game.number_of_players}</div>
         <div>Time to Beat: {game.estimated_time_to_play}</div>
         <div>Age Rec: {game.age_recommendation}</div>
+        {
+            filteredReviews.map(review => (
+                <>
+                <div className="review">{review.review} by {review.player.user.first_name}</div>
+                </>
+            )
+
+            )
+        }
+        <button
+        onClick={() => history.push(`/games/${gameId}/review`)}>Review Game</button>
     </section>
     )
 }
