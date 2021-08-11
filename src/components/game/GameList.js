@@ -4,7 +4,7 @@ import { useHistory, Link } from "react-router-dom"
 import "./Game.css"
 
 export const GameList = (props) => {
-    const { games, getGames } = useContext(GameContext)
+    const { games, getGames, deleteGame } = useContext(GameContext)
     const history = useHistory()
 
     useEffect(() => {
@@ -20,13 +20,22 @@ export const GameList = (props) => {
                 >Register New Game</button>
             {
                 games.map(game => {
-                    return <section key={`game--${game.id}`} className="game">
+                    return <>
+                    <section key={`game--${game.id}`} className="game">
                         <Link to={`/games/${game.id}`}>
-                          { game.title }
+                          <div>{ game.title }</div>
+                          <div>Average Rating: {game.average_rating}</div>
                         </Link>
+                        <button className="btn btn-3 btn-sep icon-create"
+                    onClick={() => {
+                        deleteGame(game.id)
+                    .then(history.push({ pathname: "/games" }))}}
+                    >Delete</button>
                     </section>
+                    </>
                 })
             }
+            
         </article>
     )
 }
