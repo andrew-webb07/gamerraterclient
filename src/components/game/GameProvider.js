@@ -5,6 +5,7 @@ export const GameContext = React.createContext()
 export const GameProvider = (props) => {
     const [ games, setGames ] = useState([])
     const [ reviews, setReviews ] = useState([])
+    const [ ratings, setRatings] = useState([])
 
     const getReviews = () => {
         return fetch("http://localhost:8000/reviews", {
@@ -14,6 +15,16 @@ export const GameProvider = (props) => {
         })
         .then(res => res.json())
         .then(setReviews)
+    }
+
+    const getRatings = () => {
+        return fetch("http://localhost:8000/ratings", {
+            headers: {
+                "Authorization": `Token ${localStorage.getItem("gr_token")}`
+            }
+        })
+        .then(res => res.json())
+        .then(setRatings)
     }
 
     const getGames = () => {
@@ -55,6 +66,16 @@ export const GameProvider = (props) => {
         }).then(getReviews)
     }
 
+    const createRating = (rating) => {
+        return fetch("http://localhost:8000/ratings", { 
+            method: "POST",
+            headers: {"Authorization": `Token ${localStorage.getItem("gr_token")}`,
+                      "Content-Type": "application/json"               
+            },
+            body: JSON.stringify(rating)
+        }).then(getRatings)
+    }
+
     const editGame = (game) => {
         return fetch(`http://localhost:8000/games/${game.id}`, { 
             method: "PUT",
@@ -66,8 +87,18 @@ export const GameProvider = (props) => {
         }).then(getGames)
     }
 
+    const deleteGame = (gameId) => {
+        return fetch(`http://localhost:8000/games/${gameId}`, {
+            method: "DELETE",
+            headers: {
+                "Authorization": `Token ${localStorage.getItem("gr_token")}`
+            }
+        })
+        .then(getGames)
+    }
+
     return (
-        <GameContext.Provider value={{ games, getGames, createGame, editGame, getGame, getReviews, reviews, createReview }} >
+        <GameContext.Provider value={{ games, getGames, createGame, editGame, getGame, getReviews, reviews, createReview, ratings, createRating, deleteGame }} >
             { props.children }
         </GameContext.Provider>
     )
