@@ -31,6 +31,7 @@ export const GameForm = () => {
                     estimatedTimeToPlay: game.estimated_time_to_play,
                     ageRecommendation: game.age_recommendation
                 })
+                setGameCategories(game.categories)
             })
         }
     }, [gameId])
@@ -111,17 +112,23 @@ export const GameForm = () => {
                 <div>
                     {categories.map(category => (
                         <>
-                        <input type="checkbox" key={category.id} value={category.id} onClick={event => {
+                        <input type="checkbox" key={category.id} 
+                        value={category.id} onClick={event => {
                         const copyGameCategories = [...gameCategories]
-                        const idPosition = copyGameCategories.indexOf(category.id)
-                        if (idPosition >= 0) {
-                            copyGameCategories.splice(idPosition, 1)
+                        const foundIndex = copyGameCategories.findIndex(gameCategory => gameCategory.id === category.id)
+                        if (foundIndex >= 0) {
+                            copyGameCategories.splice(foundIndex, 1)
                         }
                         else {
-                            copyGameCategories.push(category.id)
+                            copyGameCategories.push(category)
                         }
                         setGameCategories(copyGameCategories)
-                        }}/>{category.label}</>))}
+                        }}
+                        checked={
+                            gameCategories.some((gameCategory) => {
+                                return gameCategory.id === category.id
+                            })
+                        }/>{category.label}</>))}
                 </div>
             </fieldset>
             {
@@ -133,10 +140,13 @@ export const GameForm = () => {
                     editGame({
                         id: gameId,
                         title: currentGame.title,
-                        gameTypeId: parseInt(currentGame.gameTypeId),
                         description: currentGame.description,
+                        designer: currentGame.designer,
+                        yearReleased: parseInt(currentGame.yearReleased),
                         numberOfPlayers: parseInt(currentGame.numberOfPlayers),
-                        maker: currentGame.maker
+                        estimatedTimeToPlay: parseInt(currentGame.estimatedTimeToPlay),
+                        ageRecommendation: parseInt(currentGame.ageRecommendation),
+                        categories: gameCategories
                     })
                     .then(() => history.push("/games"))
                 }}
