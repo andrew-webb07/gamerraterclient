@@ -27,10 +27,14 @@ export const GameList = (props) => {
                           <div>Average Rating: {game.average_rating}</div>
                         </Link>
                         <button className="btn btn-3 btn-sep icon-create"
-                    onClick={() => {
-                        deleteGame(game.id)
-                    .then(history.push({ pathname: "/games" }))}}
-                    >Delete</button>
+                            onClick={() => {
+                            deleteGame(game.id)
+                            .then(history.push({ pathname: "/games" }))}}
+                        >Delete</button>
+                        <button className="btn btn-2 btn-sep icon-create"
+                            onClick={() => {
+                            history.push({ pathname: `/games/${game.id}/edit` })}}
+                        >Edit</button>
                     </section>
                     </>
                 })
