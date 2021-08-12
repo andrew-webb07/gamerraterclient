@@ -74,6 +74,8 @@ export const GameDetails = () => {
 
             <button
             onClick={() => history.push(`/games/${gameId}/review`)}>Review Game</button>
+            <button
+            onClick={() => history.push(`/games/${gameId}/picture`)}>Upload Action Picture</button>
         </section>
     </>
     )
