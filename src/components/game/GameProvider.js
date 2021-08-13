@@ -129,8 +129,18 @@ export const GameProvider = (props) => {
         .then(setGames)
     }
 
+    const sortGames = (sortTerms) => {
+        return fetch(`http://localhost:8000/games?orderby=${sortTerms}`, {
+            headers: {
+                "Authorization": `Token ${localStorage.getItem("gr_token")}`
+            }
+        })
+        .then(res => res.json())
+        .then(setGames)
+    }
+
     return (
-        <GameContext.Provider value={{ games, getGames, createGame, editGame, getGame, getReviews, reviews, createReview, ratings, createRating, deleteGame, pictures, getPictures, createPicture, searchGames, searchedGames }} >
+        <GameContext.Provider value={{ games, getGames, createGame, editGame, getGame, getReviews, reviews, createReview, ratings, createRating, deleteGame, pictures, getPictures, createPicture, searchGames, searchedGames, sortGames }} >
             { props.children }
         </GameContext.Provider>
     )
