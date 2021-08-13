@@ -7,6 +7,7 @@ export const GameProvider = (props) => {
     const [ reviews, setReviews ] = useState([])
     const [ ratings, setRatings] = useState([])
     const [ pictures, setPictures] = useState([])
+    const [ searchedGames, setSearchedGames ] = useState([])
 
     const getReviews = () => {
         return fetch("http://localhost:8000/reviews", {
@@ -118,8 +119,18 @@ export const GameProvider = (props) => {
         .then(getGames)
     }
 
+    const searchGames = (searchTerms) => {
+        return fetch(`http://localhost:8000/games?q=${searchTerms}`, {
+            headers: {
+                "Authorization": `Token ${localStorage.getItem("gr_token")}`
+            }
+        })
+        .then(res => res.json())
+        .then(setGames)
+    }
+
     return (
-        <GameContext.Provider value={{ games, getGames, createGame, editGame, getGame, getReviews, reviews, createReview, ratings, createRating, deleteGame, pictures, getPictures, createPicture }} >
+        <GameContext.Provider value={{ games, getGames, createGame, editGame, getGame, getReviews, reviews, createReview, ratings, createRating, deleteGame, pictures, getPictures, createPicture, searchGames, searchedGames }} >
             { props.children }
         </GameContext.Provider>
     )
