@@ -4,16 +4,26 @@ import { useHistory, Link } from "react-router-dom"
 import "./Game.css"
 
 export const GameList = (props) => {
-    const { games, getGames, deleteGame } = useContext(GameContext)
+    const { games, getGames, deleteGame, searchGames, searchedGames } = useContext(GameContext)
     const history = useHistory()
 
     useEffect(() => {
         getGames()
+        searchGames()
     }, [])
 
     return (
         <article className="games">
             <h1>Gamer Rater Games</h1>
+            <div className="searchWrapper">
+            Search:
+            <input type="text"
+            className="btn search"
+            onKeyUp={(event) => {
+              searchGames(event.target.value)
+                }}
+                placeholder="Search... " />
+            </div> 
             <button className="btn btn-2 btn-sep icon-create"
                 onClick={() => {
                 history.push({ pathname: "/games/new" })}}
