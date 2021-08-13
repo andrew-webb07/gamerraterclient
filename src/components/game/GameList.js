@@ -1,12 +1,13 @@
-import React, { useContext, useEffect } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { GameContext } from "./GameProvider.js"
 import { useHistory, Link } from "react-router-dom"
 import "./Game.css"
 
 export const GameList = (props) => {
-    const { games, getGames, deleteGame, searchGames, searchedGames } = useContext(GameContext)
+    const { games, getGames, deleteGame, searchGames, sortGames } = useContext(GameContext)
     const history = useHistory()
 
+    const [ option, setOption] = useState("")
     useEffect(() => {
         getGames()
         searchGames()
@@ -24,6 +25,19 @@ export const GameList = (props) => {
                 }}
                 placeholder="Search... " />
             </div> 
+            <div>
+                <select id="searchDropDown" value={option}
+                onChange={(event) => {
+                    setOption(event.target.value)
+                    sortGames(event.target.value)
+                }}
+                >
+                    <option key="choose" value="choose">Choose an option</option>
+                    <option key="year_released" value="year_released">Year Released</option>
+                    <option key="estimated_time_to_play" value="estimated_time_to_play">Estimated Time to Play</option>
+                    <option key="designer" value="designer">Designer</option>
+                </select>
+            </div>
             <button className="btn btn-2 btn-sep icon-create"
                 onClick={() => {
                 history.push({ pathname: "/games/new" })}}
